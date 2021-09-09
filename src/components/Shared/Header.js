@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import logo from '../../img/logo-header.png';
-import perfil from '../../img/foto-perfil.png';
 
-export default function Header(){
+export default function Header({img}){
     return (
         <StyledDiv>
             <img src={logo} alt='track it logo' />
-            <img src={perfil} alt='foto perfil' />
+            <img src={img} alt='foto perfil' />
         </StyledDiv>
     );
 }
@@ -21,7 +20,7 @@ const StyledDiv = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    
+
     img{
         margin: auto 0;
         background-color: inherit;

@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 import logo from '../../img/logo-login.png';
 import { Link } from 'react-router-dom'; 
-import { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import { sendSignIn } from '../../service/trackit';
+import { useHistory } from 'react-router'
+import UserContext from '../../contexts/UserContext';
+;
 
 
 export default function SingIn(){
+    let history = useHistory();
+    const {setUser} = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,7 +21,12 @@ export default function SingIn(){
         }
 
         sendSignIn(body)
-            .then(res => {console.log(res)})
+            .then(res => {
+                console.log(res);
+                setUser(res);
+                history.push('/habitos');  
+            })
+            .catch(() => console.log('erro no login'));
     };
 
     return(

@@ -1,11 +1,14 @@
 import Header from "../../components/Shared/Header";
 import styled from "styled-components";
 import Footer from "../../components/Shared/Footer";
+import React, { useContext } from 'react';
+import UserContext from '../../contexts/UserContext';
 
 export default function Habits(){
+    const {user} = useContext(UserContext);
     return(
         <div>
-            <Header />
+            <Header img={user.data.image}/>
             <Body>
                 <HabitsTitle>
                     Meus hábitos

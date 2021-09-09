@@ -22,8 +22,11 @@ export default function SignUp(){
         }
 
         sendSignUp(body)
-            .then( res => history.push("/"))
-            .catch( err => alert(err.data));
+            .then( res => {
+                console.log(res);
+                history.push("/");
+            })
+            .catch( err => console(err.data));
     }
 
     return(
