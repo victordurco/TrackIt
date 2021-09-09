@@ -29,6 +29,7 @@ const StyledDiv = styled.div`
         position: fixed;
         bottom: 10px;
         left: calc((100vw / 2) - 48px);
+        border-radius: 45px;
     }
 `;
 

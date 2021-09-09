@@ -1,15 +1,30 @@
 import styled from 'styled-components';
 import logo from '../../img/logo-login.png';
 import { Link } from 'react-router-dom'; 
+import { useState } from 'react';
+import { sendSignIn } from '../../service/trackit';
 
 
 export default function SingIn(){
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const login = () =>{
+        const body = {
+            email,
+            password
+        }
+
+        sendSignIn(body)
+            .then(res => {console.log(res)})
+    };
+
     return(
         <StyledDiv>
             <img src={logo} />
-            <input placeholder=' email'/>
-            <input placeholder=' senha'/>
-            <button>Entrar</button>
+            <input placeholder=' email' value={email} onChange={e=>setEmail(e.target.value)}/>
+            <input placeholder=' senha' value={password} onChange={e=>setPassword(e.target.value)}/>
+            <button onClick={login}>Entrar</button>
             <StyledLink to='/cadastro'>Não tem uma conta? Cadastre-se!</StyledLink>
         </StyledDiv>
     );

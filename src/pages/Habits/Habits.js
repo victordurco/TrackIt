@@ -31,6 +31,7 @@ const Body = styled.div`
         margin-top: 28px;
         font-size: 18px;
         color: #666666;
+        max-width: 500px;
     }
 `;
 
