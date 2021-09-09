@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function SignUp(){
     return(
         <StyledDiv>
-            <img src={logo} />
+            <img src={logo} alt='track it logo'/>
             <input placeholder=' email'/>
             <input placeholder=' senha'/>
             <input placeholder=' nome'/>
@@ -21,12 +21,13 @@ const StyledDiv = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    height: 100vh;
     
     img{
         width: 180px;
         height: 178.38px;
         margin-top: 68px;
+        background-color: inherit;
     }
 
     input{
@@ -54,6 +55,7 @@ const StyledDiv = styled.div`
 
 const StyledLink = styled(Link)`
     font-size: 14px;
-        color: #52B6FF;
-        text-decoration: none;
+    color: #52B6FF;
+    text-decoration: none;
+    background-color: inherit;
 `;

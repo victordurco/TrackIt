@@ -27,6 +27,7 @@ time, mark, audio, video{
     font-family:  'Lexend Deca', sans-serif;
 	vertical-align: baseline;
 	box-sizing: border-box;
+	background-color: #e5e5e5;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
