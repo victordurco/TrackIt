@@ -3,19 +3,49 @@ import styled from "styled-components";
 import Footer from "../../components/Shared/Footer";
 import React, { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
+import { getHabits } from "../../service/trackit";
+import { useState, useEffect } from "react";
+import CreateNewHabit from "./CreateNewHabit";
 
-export default function Habits(){
-    const {user} = useContext(UserContext);
-    return(
+export default function Habits() {
+    const { user } = useContext(UserContext);
+    const [habits, setHabits] = useState([]);
+    const [createNewHabit, setCreateNewHabit] = useState(true)
+    const token = user.data.token;
+
+    useEffect(() => {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        getHabits(config)
+        .then((response) => {
+            setHabits(response.data);
+        })
+        .catch(() => alert('Erro ao recuperar hábitos do servidor'));
+
+    }, []);
+
+
+    return (
         <div>
-            {console.log(user.data)}
-            <Header img={user.data.image}/>
+            <Header img={user.data.image} />
             <Body>
                 <HabitsTitle>
                     Meus hábitos
-                    <button>+</button>
+                    <button onClick={()=>setCreateNewHabit(true)}>+</button>
                 </HabitsTitle>
-                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                {createNewHabit?
+                    <CreateNewHabit setCreateNewHabit={setCreateNewHabit}/>
+                    :
+                    <></>
+                }
+                {habits.length > 0?
+                    <p>OIE EU TENHO HABITOS</p>
+                    :
+                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>  
+                }
             </Body>
             <Footer />
         </div>
@@ -23,7 +53,6 @@ export default function Habits(){
 }
 
 const Body = styled.div`
-
     width: 100%;
     height: 100%;
     padding: 0 18px;
@@ -60,3 +89,4 @@ const HabitsTitle = styled.div`
         color: #ffffff;
     }
 `;
+
