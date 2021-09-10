@@ -26,7 +26,7 @@ export default function SignUp(){
                 console.log(res);
                 history.push("/");
             })
-            .catch( err => console(err.data));
+            .catch( err => alert(err.data));
     }
 
     return(

@@ -5,7 +5,7 @@ export default function Header({img}){
     return (
         <StyledDiv>
             <img src={logo} alt='track it logo' />
-            <img src={img} alt='foto perfil' />
+            <StyledImg src={img} alt='foto perfil' />
         </StyledDiv>
     );
 }
@@ -25,4 +25,10 @@ const StyledDiv = styled.div`
         margin: auto 0;
         background-color: inherit;
     }
+`;
+
+const StyledImg = styled.img`
+    width: 51px;
+    height: 51px;
+    border-radius: 98px;
 `;

@@ -8,6 +8,7 @@ export default function Habits(){
     const {user} = useContext(UserContext);
     return(
         <div>
+            {console.log(user.data)}
             <Header img={user.data.image}/>
             <Body>
                 <HabitsTitle>

@@ -20,7 +20,7 @@ function App() {
     <Router>
       <GlobalStyle />
       <div className="App">
-      <UserContext.Provider value={user, setUser}>
+      <UserContext.Provider value={{user, setUser}}>
         <Switch>
         <Route path="/" exact component={SignIn} />
         <Route path="/cadastro" exact component={SignUp} />
