@@ -5,7 +5,8 @@ import React, { useState, useContext} from 'react';
 import { sendSignIn } from '../../service/trackit';
 import { useHistory } from 'react-router'
 import UserContext from '../../contexts/UserContext';
-;
+import Loading from '../../components/Shared/Loading';
+
 
 
 export default function SingIn(){
@@ -13,8 +14,10 @@ export default function SingIn(){
     const {setUser} = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const login = () =>{
+        setLoading(true);
         const body = {
             email,
             password
@@ -24,9 +27,13 @@ export default function SingIn(){
             .then(res => {
                 console.log(res);
                 setUser(res);
+                setLoading(false);
                 history.push('/habitos');  
             })
-            .catch(() => console.log('erro no login'));
+            .catch(() => {
+                alert('erro no login');
+                setLoading(false);
+            });
     };
 
     return(
@@ -34,7 +41,10 @@ export default function SingIn(){
             <img src={logo} />
             <input placeholder=' email' value={email} onChange={e=>setEmail(e.target.value)}/>
             <input placeholder=' senha' value={password} onChange={e=>setPassword(e.target.value)}/>
-            <button onClick={login}>Entrar</button>
+            {loading?
+                <Loading />
+                :
+                <button onClick={login}>Entrar</button>}
             <StyledLink to='/cadastro'>Não tem uma conta? Cadastre-se!</StyledLink>
         </StyledDiv>
     );
@@ -85,3 +95,4 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     background-color: inherit;
 `;
+

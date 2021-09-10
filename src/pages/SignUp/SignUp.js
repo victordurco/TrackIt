@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { sendSignUp } from '../../service/trackit';
+import Loading from '../../components/Shared/Loading';
 
 export default function SignUp(){
     let history = useHistory();
@@ -12,8 +13,11 @@ export default function SignUp(){
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [image, setImage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const signUp = () =>{
+        setLoading(true);
+
         const body = {
             email,
             password,
@@ -24,6 +28,7 @@ export default function SignUp(){
         sendSignUp(body)
             .then( res => {
                 console.log(res);
+                setLoading(false);
                 history.push("/");
             })
             .catch( err => alert(err.data));
@@ -36,7 +41,10 @@ export default function SignUp(){
             <input placeholder=' senha' value={password} onChange={e => setPassword(e.target.value)}/>
             <input placeholder=' nome' value={name} onChange={e => setName(e.target.value)}/>
             <input placeholder=' foto' value={image} onChange={e => setImage(e.target.value)}/>
-            <button onClick={signUp}>Cadastrar</button>
+            {loading?
+                <Loading />
+                :
+                <button onClick={signUp}>Cadastrar</button>}
             <StyledLink to='/'>Já tem uma conta? Faça login!</StyledLink>
         </StyledDiv>  
         );
