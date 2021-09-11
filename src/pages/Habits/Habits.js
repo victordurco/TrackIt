@@ -7,11 +7,12 @@ import { getHabits } from "../../service/trackit";
 import { useState, useEffect } from "react";
 import CreateNewHabit from "./CreateNewHabit";
 import UserHabitsContext from '../../contexts/UserHabitsContext';
+import UserHabit from "./UserHabit";
 
 export default function Habits() {
     const { user } = useContext(UserContext);
     const [habits, setHabits] = useState([]);
-    const [createNewHabit, setCreateNewHabit] = useState(true)
+    const [createNewHabit, setCreateNewHabit] = useState(false)
     const token = user.data.token;
     const config = {
         headers: {
@@ -39,16 +40,16 @@ export default function Habits() {
                 </HabitsTitle>
                 <UserHabitsContext.Provider value={{ loadHabits, setCreateNewHabit }}>
                     {createNewHabit ?
-                        <CreateNewHabit/>
+                        <CreateNewHabit />
                         :
                         <></>
                     }
+                    {habits.length > 0 ?
+                        habits.map((habit, index) => <UserHabit key={index} name={habit.name} days={habit.days} />)
+                        :
+                        <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                    }
                 </UserHabitsContext.Provider>
-                {habits.length > 0 ?
-                    <p>OIE EU TENHO HABITOS</p>
-                    :
-                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-                }
             </Body>
             <Footer />
         </div>
@@ -62,6 +63,8 @@ const Body = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y:scroll;
+    margin-bottom: 70px;
 
     p{
         margin-top: 28px;
@@ -76,7 +79,7 @@ const HabitsTitle = styled.div`
     flex-direction: initial;
     justify-content: space-between;
     font-size: 23px;
-    margin-top: 98px;
+    margin: 98px 0 20px 0;
     width: 100%;
     max-width: 500px;
     color: #126BA5;
@@ -93,3 +96,6 @@ const HabitsTitle = styled.div`
     }
 `;
 
+const UserHabits = styled.div`
+    height: calc(100vh - 70px);
+`;

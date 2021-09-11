@@ -23,6 +23,7 @@ const StyledDiv = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 0 31px 0 36px;
+    z-index: 1;
 
     img{
         background-color: inherit;

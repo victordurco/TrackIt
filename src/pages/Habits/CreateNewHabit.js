@@ -58,7 +58,7 @@ export default function CreateNewHabit() {
         <NewHabit>
             <input placeholder='nome do hábito' value={habitName} onChange={e=>setHabitName(e.target.value)} />
             <Week>
-                {daysOfTheWeek.map((day, index) => <Day key={index} dayId={day.id} daysOfTheWeek={daysOfTheWeek}/>)}
+                {daysOfTheWeek.map((day, index) => <Day key={index} dayId={day.id} week={daysOfTheWeek} editable={true}/>)}
             </Week>
             <ButtonsContainer>
                 <CancelButton onClick={() => setCreateNewHabit(false)}>Cancelar</CancelButton>
@@ -77,7 +77,7 @@ const NewHabit = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding: 18px 16px 15px 13px;
-    margin-top: 20px;
+    margin-bottom: 20px ;
 
     input{
         width: 303px;
