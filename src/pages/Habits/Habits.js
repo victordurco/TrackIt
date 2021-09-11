@@ -6,27 +6,28 @@ import UserContext from '../../contexts/UserContext';
 import { getHabits } from "../../service/trackit";
 import { useState, useEffect } from "react";
 import CreateNewHabit from "./CreateNewHabit";
+import UserHabitsContext from '../../contexts/UserHabitsContext';
 
 export default function Habits() {
     const { user } = useContext(UserContext);
     const [habits, setHabits] = useState([]);
     const [createNewHabit, setCreateNewHabit] = useState(true)
     const token = user.data.token;
-
-    useEffect(() => {
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
         }
+    }
+
+    const loadHabits = () => {
         getHabits(config)
-        .then((response) => {
-            setHabits(response.data);
-        })
-        .catch(() => alert('Erro ao recuperar hábitos do servidor'));
+            .then((response) => {
+                setHabits(response.data);
+            })
+            .catch(() => alert('Erro ao recuperar hábitos do servidor'));
+    }
 
-    }, []);
-
+    useEffect(() => loadHabits(), []);
 
     return (
         <div>
@@ -34,17 +35,19 @@ export default function Habits() {
             <Body>
                 <HabitsTitle>
                     Meus hábitos
-                    <button onClick={()=>setCreateNewHabit(true)}>+</button>
+                    <button onClick={() => setCreateNewHabit(true)}>+</button>
                 </HabitsTitle>
-                {createNewHabit?
-                    <CreateNewHabit setCreateNewHabit={setCreateNewHabit}/>
-                    :
-                    <></>
-                }
-                {habits.length > 0?
+                <UserHabitsContext.Provider value={{ loadHabits, setCreateNewHabit }}>
+                    {createNewHabit ?
+                        <CreateNewHabit/>
+                        :
+                        <></>
+                    }
+                </UserHabitsContext.Provider>
+                {habits.length > 0 ?
                     <p>OIE EU TENHO HABITOS</p>
                     :
-                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>  
+                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
                 }
             </Body>
             <Footer />

@@ -20,8 +20,11 @@ const getHabits = (config) => {
 };
 
 const sendHabit = (body, config) => {
-    const promise = axios.post(HABITS_URL, body, config)
+    const promise = axios.post(HABITS_URL, body, config);
+    return promise;
 };
+
+
 
 export {
     sendSignIn,
