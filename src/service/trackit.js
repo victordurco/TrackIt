@@ -24,12 +24,18 @@ const sendHabit = (body, config) => {
     return promise;
 };
 
+const sendDeleteHabit = (config, id) => {
+    const promise = axios.delete(`${HABITS_URL}/${id}`,config);
+    return promise;
+}
+
 
 
 export {
     sendSignIn,
     sendSignUp,
     getHabits,
-    sendHabit
+    sendHabit,
+    sendDeleteHabit
 };
 

@@ -1,11 +1,19 @@
 import styled from "styled-components";
 import Day from "./Day";
-import { TrashOutline } from 'react-ionicons'
+import { TrashOutline } from 'react-ionicons';
+import { sendDeleteHabit } from '../../service/trackit';
+import { useContext } from "react";
+import UserHabitsContext from "../../contexts/UserHabitsContext";
+import UserContext from "../../contexts/UserContext";
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert-edited.css'; 
 
 
 
+export default function UserHabit({ name, days, id }) {
+    const { loadHabits } = useContext(UserHabitsContext);
+    const { user } = useContext(UserContext);
 
-export default function UserHabit({ name, days }) {
     const daysOfTheWeek = [
         { id: 1, selected: false },
         { id: 2, selected: false },
@@ -20,15 +28,51 @@ export default function UserHabit({ name, days }) {
             day.selected = true;
     })
 
+    const deleteHabit = () => {
+        confirmAlert({
+            title: 'Tem certeza?',
+            message: `Deletar hábito: ${name}`,
+            buttons: [
+              {
+                label: 'Sim',
+                onClick: () => {
+                    const config = {
+                        headers: {
+                            "Authorization": `Bearer ${user.data.token}`
+                        }
+                    }
+        
+                    sendDeleteHabit(config, id)
+                        .then(loadHabits)
+                        .catch(() => alert('Erro ao deleter habito'));
+                }
+              },
+              {
+                label: 'Não',
+                onClick: () => {return}
+              }
+            ]
+          });
+    }
+
+
     return (
         <Habit>
             <span>{name}</span>
             <Week>
-                {daysOfTheWeek.map((day, index) => <Day key={index} dayId={day.id} week={daysOfTheWeek} editable={false} />)}
+                {daysOfTheWeek.map((day, index) =>
+                    <Day
+                        key={index}
+                        dayId={day.id}
+                        week={daysOfTheWeek}
+                        editable={false}
+                    />)
+                }
                 <Trash
                     color={'#00000'}
                     height="18px"
                     width="16px"
+                    onClick={deleteHabit}
                 />
             </Week>
         </Habit>

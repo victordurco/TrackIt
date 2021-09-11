@@ -23,7 +23,7 @@ export default function Habits() {
     const loadHabits = () => {
         getHabits(config)
             .then((response) => {
-                setHabits(response.data);
+                setHabits([...response.data]);
             })
             .catch(() => alert('Erro ao recuperar hábitos do servidor'));
     }
@@ -45,7 +45,13 @@ export default function Habits() {
                         <></>
                     }
                     {habits.length > 0 ?
-                        habits.map((habit, index) => <UserHabit key={index} name={habit.name} days={habit.days} />)
+                        habits.map((habit, index) => 
+                        <UserHabit 
+                            key={index} 
+                            name={habit.name} 
+                            days={habit.days} 
+                            id={habit.id}
+                        />)
                         :
                         <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
                     }
@@ -64,8 +70,9 @@ const Body = styled.div`
     flex-direction: column;
     align-items: center;
     overflow-y:scroll;
+    overflow-x: hidden;
     margin-bottom: 70px;
-
+    
     p{
         margin-top: 28px;
         font-size: 18px;
