@@ -3,10 +3,13 @@ import styled from "styled-components";
 
 
 export default function Day({ dayId, week, editable }){
-    const [selected, setSelected] = useState(week[dayId-1].selected);
+    const [selected, setSelected] = useState(week[dayId].selected);
     let dayName = '';
 
     switch (dayId) {
+        case 0:
+            dayName = 'D';
+            break;
         case 1:
             dayName = 'S';
             break;
@@ -25,15 +28,12 @@ export default function Day({ dayId, week, editable }){
         case 6:
             dayName = 'S';
             break;
-        case 7:
-            dayName = 'D';
-            break;
         default:
             break;
     }
 
     const selectDay = (id) =>{
-        week[id-1].selected = !(week[id-1].selected);
+        week[id].selected = !(week[id].selected);
         setSelected(!selected);
     }
 

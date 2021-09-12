@@ -24,7 +24,6 @@ export default function Habits() {
         getHabits(config)
             .then((response) => {
                 setHabits([...response.data]);
-                console.log(habits);
             })
             .catch(() => alert('Erro ao recuperar hábitos do servidor'));
     }
@@ -45,6 +44,7 @@ export default function Habits() {
                         :
                         <></>
                     }
+                    {console.log(habits)}
                     {habits.length > 0 ?
                         habits.map((habit, index) => 
                         <UserHabit 

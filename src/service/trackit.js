@@ -29,6 +29,10 @@ const sendDeleteHabit = (config, id) => {
     return promise;
 }
 
+const getTodayHabits = (config) => {
+    const promise = axios.get(`${HABITS_URL}/today`, config);
+    return promise;
+}
 
 
 export {
@@ -36,6 +40,7 @@ export {
     sendSignUp,
     getHabits,
     sendHabit,
-    sendDeleteHabit
+    sendDeleteHabit,
+    getTodayHabits
 };
 
