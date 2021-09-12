@@ -24,6 +24,7 @@ export default function Habits() {
         getHabits(config)
             .then((response) => {
                 setHabits([...response.data]);
+                console.log(habits);
             })
             .catch(() => alert('Erro ao recuperar hábitos do servidor'));
     }

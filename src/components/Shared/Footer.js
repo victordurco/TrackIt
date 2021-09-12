@@ -26,7 +26,7 @@ export default function Footer() {
                             })}
                         />
             </CentralOption>
-            <StyledLink to='/'>Histórico</StyledLink>  
+            <StyledLink to='/historico'>Histórico</StyledLink>  
         </StyledDiv>
     );
 }

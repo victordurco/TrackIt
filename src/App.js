@@ -3,6 +3,7 @@ import GlobalStyle from './style/globalStyles';
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import Habits from "./pages/Habits/Habits";
+import Historic from "./pages/Historic/Historic";
 import UserContext from './contexts/UserContext';
 import { useState } from "react/cjs/react.development";
 import {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" exact component={SignIn} />
         <Route path="/cadastro" exact component={SignUp} />
         <Route path="/habitos" exact component={Habits} />
+        <Route path="/historico" exact component={Historic} />
         </Switch>
       </UserContext.Provider>
       </div>

@@ -56,9 +56,19 @@ export default function CreateNewHabit() {
 
     return (
         <NewHabit>
-            <input placeholder='nome do hábito' value={habitName} onChange={e=>setHabitName(e.target.value)} />
+            <input 
+                placeholder='nome do hábito'   
+                value={habitName} 
+                onChange={e=>setHabitName(e.target.value)} 
+            />
             <Week>
-                {daysOfTheWeek.map((day, index) => <Day key={index} dayId={day.id} week={daysOfTheWeek} editable={true}/>)}
+                {daysOfTheWeek.map((day, index) => 
+                    <Day 
+                        key={index} 
+                        dayId={day.id} 
+                        week={daysOfTheWeek} 
+                        editable={true}
+                    />)}
             </Week>
             <ButtonsContainer>
                 <CancelButton onClick={() => setCreateNewHabit(false)}>Cancelar</CancelButton>
