@@ -6,22 +6,43 @@ import { useContext, useState, useEffect } from "react";
 import React from 'react';
 import * as dayjs from 'dayjs';
 import { Checkmark } from "react-ionicons";
-import { getTodayHabits } from "../../service/trackit";
+import { getTodayHabits, sendCheckHabit } from "../../service/trackit";
 
 
-const TodayHabit = () => {
+const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayHabits}) => {
+    const { user } = useContext(UserContext);
+    const [checked, setChecked] = useState(done);
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${user.data.token}`
+        }
+    }
+
+    const checkHabit = () => {
+        setChecked(true);
+        sendCheckHabit(id, config)
+            .then(()=>{
+                loadTodayHabits();
+            })
+            .catch(()=> {
+                setChecked(false);
+                alert('Erro ao marcar hábito')});
+    }
+
     return (
         <TodayHabitContainer>
             <HabitInfo>
-                <HabitName>Ler 1 capítulo de livro</HabitName>
-                <HabitSequence>Sequência atual: 3 dias</HabitSequence>
-                <HabitSequence>Seu recorde: 5 dias</HabitSequence>
+                <HabitName>{name}</HabitName>
+                <HabitSequence>Sequência atual: {currentSequence} dias</HabitSequence>
+                <HabitSequence>Seu recorde: {highestSequence} dias</HabitSequence>
             </HabitInfo>
-            <HabitCheck>
+            <HabitCheck onClick={checkHabit} checked={checked}>
                 <StyledCheckmark
                     color={'#ffffff'}
                     height="60px"
                     width="60px"
+                    checked={checked}
                 />
             </HabitCheck>
         </TodayHabitContainer>
@@ -59,8 +80,17 @@ export default function Today() {
             <Header img={user.data.image} />
             <TodayTitle>{date}</TodayTitle>
             <TodaySubtitle>Nenhum hábito concluído ainda</TodaySubtitle>
-            <TodayHabit />
-            {console.log(todayHabits)}
+            {todayHabits.map( (habit, index) => 
+                <TodayHabit 
+                    key={index}
+                    id={habit.id}
+                    name={habit.name}
+                    done={habit.done}
+                    currentSequence={habit.currentSequence}
+                    highestSequence={habit.highestSequence}
+                    loadTodayHabits={loadTodayHabits}
+                />    
+            )}
             <Footer />
         </Container>
     );
@@ -96,6 +126,7 @@ const TodayHabitContainer = styled.div`
     display: flex;
     flex-direction: initial;
     justify-content: space-between;
+    margin-bottom: 10px;
 `;
 
 const HabitInfo = styled.div`
@@ -121,12 +152,12 @@ const HabitCheck = styled.button`
     height: 69px;
     border-radius: 5px;
     border: none;
-    background-color: #EBEBEB;
+    background-color: ${props => props.checked? '#8FC549' : '#EBEBEB'};
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 
 const StyledCheckmark = styled(Checkmark)`
-    background-color: #EBEBEB;
+    background-color: ${props => props.checked? '#8FC549' : '#EBEBEB'};
 `;

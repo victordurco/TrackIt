@@ -24,7 +24,7 @@ const sendHabit = (body, config) => {
     return promise;
 };
 
-const sendDeleteHabit = (config, id) => {
+const sendDeleteHabit = (id, config) => {
     const promise = axios.delete(`${HABITS_URL}/${id}`,config);
     return promise;
 }
@@ -34,6 +34,10 @@ const getTodayHabits = (config) => {
     return promise;
 }
 
+const sendCheckHabit = (id, config) => {
+    const promise = axios.post(`${HABITS_URL}/${id}/check`, '', config);
+    return promise;
+}
 
 export {
     sendSignIn,
@@ -41,6 +45,7 @@ export {
     getHabits,
     sendHabit,
     sendDeleteHabit,
-    getTodayHabits
+    getTodayHabits,
+    sendCheckHabit
 };
 
