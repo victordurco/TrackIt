@@ -67,11 +67,20 @@ const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayH
 }
 
 export default function Today() {
+    //dayjs variables
     require('dayjs/locale/pt-br');
     let date = dayjs().locale('pt-br').format('dddd, DD/MM');
-
+    //hooks
     const { user } = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState([]);
+    //completed habits count
+    let completedHabits = 0;
+    todayHabits.forEach( habit => {
+        if (habit.done)
+            completedHabits++;
+    });
+    let percentageOfCompletedHabits = Math.round(completedHabits*100/todayHabits.length).toFixed(0);
+    //user data
     const token = user.data.token;
     const config = {
         headers: {
@@ -96,7 +105,11 @@ export default function Today() {
         <Container>
             <Header img={user.data.image} />
             <TodayTitle>{date}</TodayTitle>
-            <TodaySubtitle>Nenhum hábito concluído ainda</TodaySubtitle>
+            {completedHabits > 0?
+                <CompletedSubtitle>{percentageOfCompletedHabits}% dos hábitos concluídos</CompletedSubtitle>
+            :
+                <NoneSubtitle>Nenhum hábito concluído ainda</NoneSubtitle>
+            }
             {todayHabits.map( (habit, index) => 
                 <TodayHabit 
                     key={index}
@@ -127,9 +140,15 @@ const TodayTitle = styled.span`
     margin-bottom: 5px;
 `;
 
-const TodaySubtitle = styled.span`
+const NoneSubtitle = styled.span`
     font-size: 18px;
     color: #BABABA;
+    margin-bottom: 28px;
+`;
+
+const CompletedSubtitle = styled.span`
+    font-size: 18px;
+    color: #8FC549;
     margin-bottom: 28px;
 `;
 

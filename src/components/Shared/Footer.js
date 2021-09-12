@@ -14,7 +14,7 @@ export default function Footer() {
             <CentralOption >
                 <Link to='/hoje'>
                     <CircularProgressbar
-                        value={50}
+                        value={60.5}
                         text={`Hoje`}
                         background
                         backgroundPadding={6}
