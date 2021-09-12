@@ -12,21 +12,23 @@ export default function Footer() {
         <StyledDiv>
             <StyledLink to='/habitos'>Hábitos</StyledLink>
             <CentralOption >
-                <CircularProgressbar
-                            value={50}
-                            text={`Hoje`}
-                            background
-                            backgroundPadding={6}
-                            styles={buildStyles({
+                <Link to='/hoje'>
+                    <CircularProgressbar
+                        value={50}
+                        text={`Hoje`}
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
                             backgroundColor: "#52B6FF",
                             textColor: "#fff",
                             pathColor: "#fff",
                             textSize: '18px',
                             trailColor: "transparent",
-                            })}
-                        />
+                        })}
+                    />
+                </Link>
             </CentralOption>
-            <StyledLink to='/historico'>Histórico</StyledLink>  
+            <StyledLink to='/historico'>Histórico</StyledLink>
         </StyledDiv>
     );
 }
