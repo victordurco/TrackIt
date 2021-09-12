@@ -39,6 +39,11 @@ const sendCheckHabit = (id, config) => {
     return promise;
 }
 
+const sendUncheckHabit = (id, config) => {
+    const promise = axios. post(`${HABITS_URL}/${id}/uncheck`, '', config);
+    return promise;
+}
+
 export {
     sendSignIn,
     sendSignUp,
@@ -46,6 +51,7 @@ export {
     sendHabit,
     sendDeleteHabit,
     getTodayHabits,
-    sendCheckHabit
+    sendCheckHabit,
+    sendUncheckHabit
 };
 

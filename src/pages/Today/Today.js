@@ -6,7 +6,7 @@ import { useContext, useState, useEffect } from "react";
 import React from 'react';
 import * as dayjs from 'dayjs';
 import { Checkmark } from "react-ionicons";
-import { getTodayHabits, sendCheckHabit } from "../../service/trackit";
+import { getTodayHabits, sendCheckHabit, sendUncheckHabit } from "../../service/trackit";
 
 
 const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayHabits}) => {
@@ -20,15 +20,32 @@ const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayH
     }
 
     const checkHabit = () => {
-        setChecked(true);
-        sendCheckHabit(id, config)
+        if (checked){
+            uncheckHabit();
+        }else{
+            setChecked(true);
+            sendCheckHabit(id, config)
+                .then(()=>{
+                    loadTodayHabits();
+                })
+                .catch(()=> {
+                    setChecked(false);
+                    alert('Erro ao marcar hábito')});
+        }
+    }
+
+    const uncheckHabit = () => {
+        setChecked(false);
+        sendUncheckHabit(id, config)
             .then(()=>{
                 loadTodayHabits();
             })
-            .catch(()=> {
-                setChecked(false);
-                alert('Erro ao marcar hábito')});
+            .catch(()=>{
+                setChecked(true);
+                alert('Erro ao desmarcar hábito');
+            })
     }
+
 
     return (
         <TodayHabitContainer>
@@ -98,7 +115,7 @@ export default function Today() {
 
 
 const Container = styled.div`
-    margin-top: 70px;
+    margin: 70px 0 70px 0;
     padding: 28px 17px 0 18px;
     display: flex;
     flex-direction: column;
