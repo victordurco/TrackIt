@@ -2,7 +2,7 @@ import { useState } from "react/cjs/react.development";
 import styled from "styled-components";
 
 
-export default function Day({ dayId, week,setDaysOfTheWeek, editable }){
+export default function Day({ dayId, week,setDaysOfTheWeek, editable, loading }){
     const [selected, setSelected] = useState(week[dayId].selected);
     let dayName = '';
 
@@ -46,12 +46,18 @@ export default function Day({ dayId, week,setDaysOfTheWeek, editable }){
                     onClick={()=>selectDay(dayId)} 
                     selected={selected}
                     setDaysOfTheWeek={setDaysOfTheWeek}
+                    loading={loading}
                 >        
                         {dayName}
                    
                 </DayOfTheWeek>
                 :
-                <DayOfTheWeek  selected={selected}>{dayName}</DayOfTheWeek>
+                <DayOfTheWeek  
+                    selected={selected}
+                    loading={loading}
+                >
+                    {dayName}
+                </DayOfTheWeek>
             }
         </>
     );
@@ -70,4 +76,5 @@ const DayOfTheWeek = styled.button`
     border: 1px solid #D4D4D4;
     background-color: ${ props => props.selected? '#CFCFCF ': 'inherit'};
     color: ${ props => props.selected? "#FFFFFF": "#DBDBDB"};
+    pointer-events: ${props => props.loading? 'none':'initial'};
 `;

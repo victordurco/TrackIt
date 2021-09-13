@@ -11,6 +11,7 @@ export default function CreateNewHabit() {
     const { loadHabits, setCreateNewHabit } = useContext(UserHabitsContext);
     const { user } = useContext(UserContext);
     const [habitName, setHabitName] = useState('');
+    const [loading, setLoading] = useState(false);
     const [daysOfTheWeek, setDaysOfTheWeek] = useState([
         { id: 0, selected: false },
         { id: 1, selected: false },
@@ -45,6 +46,7 @@ export default function CreateNewHabit() {
     }
 
     const saveHabit = () => {
+        setLoading(true);
         const days = createDaysArray();
         const body = {
             name: habitName,
@@ -57,16 +59,20 @@ export default function CreateNewHabit() {
         }
         sendHabit(body, config)
             .then(() => {
+                setLoading(false);
                 resetDaysOfTheWeek();
                 setCreateNewHabit(false);
                 loadHabits();
             })
-            .catch(() => alert('Erro ao cadastrar hábito'));
+            .catch(() => {
+                setLoading(false);
+                alert('Erro ao cadastrar hábito')
+            });
 
     }
 
     return (
-        <NewHabit>
+        <NewHabit loading={loading}>
             <input
                 placeholder='nome do hábito'
                 value={habitName}
@@ -80,10 +86,11 @@ export default function CreateNewHabit() {
                         week={daysOfTheWeek}
                         setDaysOfTheWeek={setDaysOfTheWeek}
                         editable={true}
+                        loading={loading}
                     />)}
             </Week>
             <ButtonsContainer>
-                <CancelButton onClick={() => setCreateNewHabit(false)}>Cancelar</CancelButton>
+                <CancelButton onClick={() => setCreateNewHabit(false)} loading={loading}>Cancelar</CancelButton>
                 <SaveButton onClick={saveHabit}>Salvar</SaveButton>
             </ButtonsContainer>
         </NewHabit>
@@ -109,6 +116,7 @@ const NewHabit = styled.div`
         font-size: 20px;
         padding-left: 11px;
         color: #7a7a7a;
+        pointer-events: ${props => props.loading? 'none':'initial'};
     }
 
     input::placeholder {
@@ -132,6 +140,7 @@ const CancelButton = styled.button`
     margin-left: 148px;
     margin-right: 8px;
     border: none;
+    pointer-events: ${props => props.loading? 'none':'initial'};
 `;
 
 const SaveButton = styled.button`

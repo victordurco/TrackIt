@@ -69,6 +69,7 @@ export default function UserHabit({ name, days, id }) {
                         week={daysOfTheWeek}
                         setDaysOfTheWeek={setDaysOfTheWeek}
                         editable={false}
+                        loading={false}
                     />)
                 }
                 <Trash
