@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import logo from '../../img/logo-login.png';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { sendSignUp } from '../../service/trackit';
-import Loading from '../../components/Shared/Loading';
+import Loading from '../../components/Shared/LoadingLogIn';
 
-export default function SignUp(){
+export default function SignUp() {
     let history = useHistory();
 
     const [email, setEmail] = useState('');
@@ -15,7 +15,8 @@ export default function SignUp(){
     const [image, setImage] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const signUp = () =>{
+    const signUp = (e) => {
+        e.preventDefault();
         setLoading(true);
 
         const body = {
@@ -26,28 +27,33 @@ export default function SignUp(){
         }
 
         sendSignUp(body)
-            .then( res => {
+            .then(res => {
                 console.log(res);
                 setLoading(false);
                 history.push("/");
             })
-            .catch( err => alert(err.data));
+            .catch(err => {
+                setLoading(false);
+                alert(err.data)
+            });
     }
 
-    return(
+    return (
         <StyledDiv>
-            <img src={logo} alt='track it logo'/>
-            <input placeholder=' email' value={email} onChange={e => setEmail(e.target.value)}/>
-            <input placeholder=' senha' value={password} onChange={e => setPassword(e.target.value)}/>
-            <input placeholder=' nome' value={name} onChange={e => setName(e.target.value)}/>
-            <input placeholder=' foto' value={image} onChange={e => setImage(e.target.value)}/>
-            {loading?
-                <Loading />
-                :
-                <button onClick={signUp}>Cadastrar</button>}
+            <img src={logo} alt='track it logo' />
+            <Form onSubmit={SignUp}>
+                <input type='email' placeholder=' email' value={email} onChange={e => setEmail(e.target.value)} required/>
+                <input type='password' placeholder=' senha' value={password} onChange={e => setPassword(e.target.value)} required/>
+                <input type='text' placeholder=' nome' value={name} onChange={e => setName(e.target.value)} required/>
+                <input type='url' placeholder=' foto' value={image} onChange={e => setImage(e.target.value)} />
+                {loading ?
+                    <Loading />
+                    :
+                    <button onClick={signUp}>Cadastrar</button>}
+            </Form>
             <StyledLink to='/'>Já tem uma conta? Faça login!</StyledLink>
-        </StyledDiv>  
-        );
+        </StyledDiv>
+    );
 }
 
 const StyledDiv = styled.div`
@@ -92,4 +98,11 @@ const StyledLink = styled(Link)`
     color: #52B6FF;
     text-decoration: none;
     background-color: inherit;
+`;
+
+const Form = styled.form`
+    background-color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;

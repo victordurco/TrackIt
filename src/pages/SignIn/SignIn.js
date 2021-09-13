@@ -1,22 +1,23 @@
 import styled from 'styled-components';
 import logo from '../../img/logo-login.png';
-import { Link } from 'react-router-dom'; 
-import React, { useState, useContext} from 'react';
+import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
 import { sendSignIn } from '../../service/trackit';
 import { useHistory } from 'react-router'
 import UserContext from '../../contexts/UserContext';
-import Loading from '../../components/Shared/Loading';
+import Loading from '../../components/Shared/LoadingLogIn';
 
 
 
-export default function SingIn(){
+export default function SingIn() {
     let history = useHistory();
-    const {setUser} = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const login = () =>{
+    const login = (e) => {
+        e.preventDefault();
         setLoading(true);
         const body = {
             email,
@@ -28,7 +29,7 @@ export default function SingIn(){
                 console.log(res);
                 setUser(res);
                 setLoading(false);
-                history.push('/hoje');  
+                history.push('/hoje');
             })
             .catch(() => {
                 alert('erro no login');
@@ -36,15 +37,17 @@ export default function SingIn(){
             });
     };
 
-    return(
+    return (
         <StyledDiv>
             <img src={logo} />
-            <input placeholder=' email' value={email} onChange={e=>setEmail(e.target.value)}/>
-            <input placeholder=' senha' value={password} onChange={e=>setPassword(e.target.value)}/>
-            {loading?
-                <Loading />
-                :
-                <button onClick={login}>Entrar</button>}
+            <Form onSubmit={login}>
+                <input type="email" placeholder=' email' value={email} onChange={e => setEmail(e.target.value)} required/>
+                <input type="password" placeholder=' senha' value={password} onChange={e => setPassword(e.target.value)} required/>
+                {loading ?
+                    <Loading />
+                    :
+                    <button type="submit" onClick={login}>Entrar</button>}
+            </Form>
             <StyledLink to='/cadastro'>Não tem uma conta? Cadastre-se!</StyledLink>
         </StyledDiv>
     );
@@ -94,5 +97,12 @@ const StyledLink = styled(Link)`
     color: #52B6FF;
     text-decoration: none;
     background-color: inherit;
+`;
+
+const Form = styled.form`
+    background-color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;
 
