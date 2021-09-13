@@ -5,7 +5,6 @@ import { sendDeleteHabit } from '../../service/trackit';
 import { useContext } from "react";
 import UserHabitsContext from "../../contexts/UserHabitsContext";
 import UserContext from "../../contexts/UserContext";
-import 'react-confirm-alert/src/react-confirm-alert-edited.css';
 import { useState } from "react/cjs/react.development";
 import Loading from "../../components/Shared/LoadingLogIn";
 import Swal from 'sweetalert2';
