@@ -98,7 +98,13 @@ export default function Today() {
             .then( (response) => {
                 console.log(response);
                 setTodayHabits([...response.data]);
-                setTodaysProgress(percentageOfCompletedHabits);
+                let newCompletedHabits = 0;
+                response.data.forEach( habit => {
+                    if (habit.done)
+                    newCompletedHabits++;
+                });
+                let newPercentageOfCompletedHabits = Math.round(newCompletedHabits*100/response.data.length).toFixed(0);
+                setTodaysProgress(newPercentageOfCompletedHabits);
             })
             .catch(() => alert('Erro ao recuperar hábitos do servidor'));
     }
