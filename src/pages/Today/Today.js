@@ -183,7 +183,7 @@ const TodayHabitContainer = styled.div`
     display: flex;
     flex-direction: initial;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin: 0 auto 10px auto;
 `;
 
 const HabitInfo = styled.div`
