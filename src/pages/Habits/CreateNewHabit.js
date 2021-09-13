@@ -5,6 +5,7 @@ import UserHabitsContext from '../../contexts/UserHabitsContext';
 import { useContext, useEffect } from "react";
 import { useState } from "react/cjs/react.development";
 import { sendHabit } from "../../service/trackit";
+import Loading from "../../components/Shared/LoadingCreateHabit";
 
 
 export default function CreateNewHabit() {
@@ -91,7 +92,11 @@ export default function CreateNewHabit() {
             </Week>
             <ButtonsContainer>
                 <CancelButton onClick={() => setCreateNewHabit(false)} loading={loading}>Cancelar</CancelButton>
-                <SaveButton onClick={saveHabit}>Salvar</SaveButton>
+                {loading ?
+                    <Loading />
+                    :
+                    <SaveButton onClick={saveHabit}>Salvar</SaveButton>
+                }
             </ButtonsContainer>
         </NewHabit>
     );
@@ -116,7 +121,7 @@ const NewHabit = styled.div`
         font-size: 20px;
         padding-left: 11px;
         color: #7a7a7a;
-        pointer-events: ${props => props.loading? 'none':'initial'};
+        pointer-events: ${props => props.loading ? 'none' : 'initial'};
     }
 
     input::placeholder {
@@ -140,7 +145,7 @@ const CancelButton = styled.button`
     margin-left: 148px;
     margin-right: 8px;
     border: none;
-    pointer-events: ${props => props.loading? 'none':'initial'};
+    pointer-events: ${props => props.loading ? 'none' : 'initial'};
 `;
 
 const SaveButton = styled.button`
