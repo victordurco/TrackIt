@@ -5,10 +5,10 @@ import { sendDeleteHabit } from '../../service/trackit';
 import { useContext } from "react";
 import UserHabitsContext from "../../contexts/UserHabitsContext";
 import UserContext from "../../contexts/UserContext";
-import { confirmAlert } from 'react-confirm-alert'; 
-import 'react-confirm-alert/src/react-confirm-alert-edited.css'; 
+import 'react-confirm-alert/src/react-confirm-alert-edited.css';
 import { useState } from "react/cjs/react.development";
 import Loading from "../../components/Shared/LoadingLogIn";
+import Swal from 'sweetalert2';
 
 
 
@@ -24,7 +24,7 @@ export default function UserHabit({ name, days, id }) {
         { id: 4, selected: false },
         { id: 5, selected: false },
         { id: 6, selected: false },
-        ]);
+    ]);
 
     daysOfTheWeek.forEach(day => {
         if (days.includes(day.id))
@@ -32,30 +32,31 @@ export default function UserHabit({ name, days, id }) {
     })
 
     const deleteHabit = () => {
-        confirmAlert({
+        Swal.fire({
             title: 'Tem certeza?',
-            message: `Deletar hábito: ${name}`,
-            buttons: [
-              {
-                label: 'Sim',
-                onClick: () => {
-                    const config = {
-                        headers: {
-                            "Authorization": `Bearer ${user.data.token}`
-                        }
+            text: `deletar hábito: ${name}`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, deletar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const config = {
+                    headers: {
+                        "Authorization": `Bearer ${user.data.token}`
                     }
-        
-                    sendDeleteHabit(id,config)
-                        .then(loadHabits)
-                        .catch(() => alert('Erro ao deleter habito'));
                 }
-              },
-              {
-                label: 'Não',
-                onClick: () => {return}
-              }
-            ]
-          });
+
+                sendDeleteHabit(id, config)
+                    .then(loadHabits)
+                    .catch(() => alert('Erro ao deleter habito'));
+            }
+        })
+
+
+
+
     }
 
 
