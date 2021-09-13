@@ -38,7 +38,7 @@ export default function SingIn() {
 
     return (
         <StyledDiv>
-            <img src={logo} />
+            <img src={logo} alt='logo'/>
             <Form onSubmit={login}>
                 <input type="email" placeholder=' email' value={email} onChange={e => setEmail(e.target.value)} required/>
                 <input type="password" placeholder=' senha' value={password} onChange={e => setPassword(e.target.value)} required/>

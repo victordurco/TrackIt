@@ -40,7 +40,7 @@ const sendCheckHabit = (id, config) => {
 }
 
 const sendUncheckHabit = (id, config) => {
-    const promise = axios. post(`${HABITS_URL}/${id}/uncheck`, '', config);
+    const promise = axios.post(`${HABITS_URL}/${id}/uncheck`, '', config);
     return promise;
 }
 

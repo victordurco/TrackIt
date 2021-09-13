@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Day from './Day';
 import UserContext from "../../contexts/UserContext";
 import UserHabitsContext from '../../contexts/UserHabitsContext';
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { useState } from "react/cjs/react.development";
 import { sendHabit } from "../../service/trackit";
 import Loading from "../../components/Shared/LoadingCreateHabit";

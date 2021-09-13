@@ -47,9 +47,9 @@ export default function Habits() {
                         <></>
                     }
                     {habits.length > 0 ?
-                        habits.map((habit, index) => 
+                        habits.map((habit) => 
                         <UserHabit 
-                            key={index} 
+                            key={habit.id} 
                             name={habit.name} 
                             days={habit.days} 
                             id={habit.id}
@@ -105,6 +105,3 @@ const HabitsTitle = styled.div`
     }
 `;
 
-const UserHabits = styled.div`
-    height: calc(100vh - 70px);
-`;

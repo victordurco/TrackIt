@@ -10,7 +10,7 @@ import { getTodayHabits, sendCheckHabit, sendUncheckHabit } from "../../service/
 
 
 const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayHabits}) => {
-    const { user, setTodaysProgress } = useContext(UserContext);
+    const { user} = useContext(UserContext);
     const [checked, setChecked] = useState(done);
     const newRecord = done && currentSequence === highestSequence? true : false;
     const config = {
