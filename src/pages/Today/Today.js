@@ -97,7 +97,6 @@ export default function Today() {
     const loadTodayHabits =  () => {
         getTodayHabits(config)
             .then( (response) => {
-                console.log(response);
                 setTodayHabits([...response.data]);
                 let newCompletedHabits = 0;
                 response.data.forEach( habit => {
