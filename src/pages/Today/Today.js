@@ -9,7 +9,7 @@ import { Checkmark } from "react-ionicons";
 import { getTodayHabits, sendCheckHabit, sendUncheckHabit } from "../../service/trackit";
 
 
-const TodayHabit = ({ id, name, done, currentSequence, highestSequence, loadTodayHabits, completedHabits, numberOfHabits }) => {
+const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayHabits}) => {
     const { user, setTodaysProgress } = useContext(UserContext);
     const [checked, setChecked] = useState(done);
     const config = {
@@ -21,32 +21,31 @@ const TodayHabit = ({ id, name, done, currentSequence, highestSequence, loadToda
     const uncheckHabit = () => {
         setChecked(false);
         sendUncheckHabit(id, config)
-            .then(() => {
+            .then(()=>{
                 loadTodayHabits();
             })
-            .catch(() => {
+            .catch(()=>{
                 setChecked(true);
                 alert('Erro ao desmarcar hábito');
             })
     }
 
     const checkHabit = () => {
-        if (checked) {
+        if (checked){
             uncheckHabit();
-        } else {
+        }else{
             setChecked(true);
             sendCheckHabit(id, config)
-                .then(() => {
+                .then(()=>{
                     loadTodayHabits();
                 })
-                .catch(() => {
+                .catch(()=> {
                     setChecked(false);
-                    alert('Erro ao marcar hábito')
-                });
+                    alert('Erro ao marcar hábito')});
         }
     }
 
-
+  
 
     return (
         <TodayHabitContainer>
@@ -76,9 +75,15 @@ export default function Today() {
     const { user, setTodaysProgress } = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState([]);
 
+    
+    //completed habits count
     let completedHabits = 0;
-    let percentageOfCompletedHabits =0;
-
+    todayHabits.forEach( habit => {
+        if (habit.done)
+            completedHabits++;
+    });
+    let percentageOfCompletedHabits = Math.round(completedHabits*100/todayHabits.length).toFixed(0);
+    
     //user data
     const token = user.data.token;
     const config = {
@@ -87,18 +92,12 @@ export default function Today() {
         }
     }
 
-    const loadTodayHabits = () => {
+
+    const loadTodayHabits =  () => {
         getTodayHabits(config)
-            .then((response) => {
+            .then( (response) => {
                 console.log(response);
                 setTodayHabits([...response.data]);
-                //completed habits count
-                
-                todayHabits.forEach(habit => {
-                    if (habit.done)
-                        completedHabits++;
-                });
-                percentageOfCompletedHabits = Math.round(completedHabits * 100 / todayHabits.length).toFixed(0);
                 setTodaysProgress(percentageOfCompletedHabits);
             })
             .catch(() => alert('Erro ao recuperar hábitos do servidor'));
@@ -110,14 +109,14 @@ export default function Today() {
         <Container>
             <Header img={user.data.image} />
             <TodayTitle>{date}</TodayTitle>
-            {completedHabits > 0 ?
+            {completedHabits > 0?
                 <CompletedSubtitle>{percentageOfCompletedHabits}% dos hábitos concluídos</CompletedSubtitle>
-                :
+            :
                 <NoneSubtitle>Nenhum hábito concluído ainda</NoneSubtitle>
             }
-            {todayHabits.length > 0 ?
-                todayHabits.map((habit, index) =>
-                    <TodayHabit
+            {todayHabits.length > 0?
+                todayHabits.map( (habit, index) => 
+                    <TodayHabit 
                         key={index}
                         id={habit.id}
                         name={habit.name}
@@ -125,8 +124,6 @@ export default function Today() {
                         currentSequence={habit.currentSequence}
                         highestSequence={habit.highestSequence}
                         loadTodayHabits={loadTodayHabits}
-                        completedHabits={completedHabits}
-                        numberOfHabits={todayHabits.length}
                     />)
                 :
                 <p>Você não tem nenhum hábito cadastrado para hoje</p>
@@ -201,7 +198,7 @@ const HabitSequence = styled.span`
 `;
 
 const Span = styled.span`
-    color: ${props => props.done ? '#8FC549' : '#666666'};
+    color: ${props => props.done? '#8FC549' : '#666666'};
     background-color: inherit;
 `;
 
@@ -211,12 +208,12 @@ const HabitCheck = styled.button`
     height: 69px;
     border-radius: 5px;
     border: none;
-    background-color: ${props => props.checked ? '#8FC549' : '#EBEBEB'};
+    background-color: ${props => props.checked? '#8FC549' : '#EBEBEB'};
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 
 const StyledCheckmark = styled(Checkmark)`
-    background-color: ${props => props.checked ? '#8FC549' : '#EBEBEB'};
+    background-color: ${props => props.checked? '#8FC549' : '#EBEBEB'};
 `;

@@ -43,7 +43,7 @@ export default function UserHabit({ name, days, id }) {
                         }
                     }
         
-                    sendDeleteHabit(config, id)
+                    sendDeleteHabit(id,config)
                         .then(loadHabits)
                         .catch(() => alert('Erro ao deleter habito'));
                 }
