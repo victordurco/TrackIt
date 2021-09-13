@@ -44,7 +44,6 @@ export default function Habits() {
                         :
                         <></>
                     }
-                    {console.log(habits)}
                     {habits.length > 0 ?
                         habits.map((habit, index) => 
                         <UserHabit 

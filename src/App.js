@@ -17,12 +17,13 @@ import {
 
 function App() {
   const [user, setUser] = useState({});
+  const [todaysProgress, setTodaysProgress] = useState(0);
 
   return (
     <Router>
       <GlobalStyle />
       <div className="App">
-      <UserContext.Provider value={{user, setUser}}>
+      <UserContext.Provider value={{user, setUser, todaysProgress, setTodaysProgress}}>
         <Switch>
         <Route path="/" exact component={SignIn} />
         <Route path="/cadastro" exact component={SignUp} />

@@ -28,7 +28,7 @@ export default function SingIn(){
                 console.log(res);
                 setUser(res);
                 setLoading(false);
-                history.push('/habitos');  
+                history.push('/hoje');  
             })
             .catch(() => {
                 alert('erro no login');

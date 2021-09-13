@@ -5,16 +5,19 @@ import {
     buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import UserContext from "../../contexts/UserContext";
+import { useContext } from "react";
 
 
 export default function Footer() {
+    const {todaysProgress} = useContext(UserContext);
     return (
         <StyledDiv>
             <StyledLink to='/habitos'>Hábitos</StyledLink>
             <CentralOption >
                 <Link to='/hoje'>
                     <CircularProgressbar
-                        value={60.5}
+                        value={todaysProgress}
                         text={`Hoje`}
                         background
                         backgroundPadding={6}
