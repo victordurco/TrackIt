@@ -12,6 +12,7 @@ import { getTodayHabits, sendCheckHabit, sendUncheckHabit } from "../../service/
 const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayHabits}) => {
     const { user, setTodaysProgress } = useContext(UserContext);
     const [checked, setChecked] = useState(done);
+    const newRecord = done && currentSequence === highestSequence? true : false;
     const config = {
         headers: {
             "Authorization": `Bearer ${user.data.token}`
@@ -51,8 +52,8 @@ const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayH
         <TodayHabitContainer>
             <HabitInfo>
                 <HabitName>{name}</HabitName>
-                <HabitSequence>Sequência atual: <Span done={done}>{currentSequence} dias</Span></HabitSequence>
-                <HabitSequence>Seu recorde: <Span done={done}>{highestSequence} dias</Span></HabitSequence>
+                <HabitSequence>Sequência atual: <Span shouldBeGreen={done}>{currentSequence} dias</Span></HabitSequence>
+                <HabitSequence>Seu recorde: <Span shouldBeGreen={newRecord}>{highestSequence} dias</Span></HabitSequence>
             </HabitInfo>
             <HabitCheck onClick={checkHabit} checked={checked}>
                 <StyledCheckmark
@@ -204,7 +205,7 @@ const HabitSequence = styled.span`
 `;
 
 const Span = styled.span`
-    color: ${props => props.done? '#8FC549' : '#666666'};
+    color: ${props => props.shouldBeGreen? '#8FC549' : '#666666'};
     background-color: inherit;
 `;
 
