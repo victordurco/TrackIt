@@ -10,7 +10,7 @@ import UserHabitsContext from '../../contexts/UserHabitsContext';
 import UserHabit from "./UserHabit";
 
 export default function Habits() {
-    const { user } = useContext(UserContext);
+    const { user, setTodaysProgress } = useContext(UserContext);
     const [habits, setHabits] = useState([]);
     const [createNewHabit, setCreateNewHabit] = useState(false)
     const token = user.data.token;
@@ -24,6 +24,8 @@ export default function Habits() {
         getHabits(config)
             .then((response) => {
                 setHabits([...response.data]);
+                if(response.data.length===0)
+                    setTodaysProgress(0);
             })
             .catch(() => alert('Erro ao recuperar hábitos do servidor'));
     }

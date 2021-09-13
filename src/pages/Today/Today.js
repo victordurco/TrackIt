@@ -84,7 +84,8 @@ export default function Today() {
             completedHabits++;
     });
     let percentageOfCompletedHabits = Math.round(completedHabits*100/todayHabits.length).toFixed(0);
-    
+ 
+
     //user data
     const token = user.data.token;
     const config = {

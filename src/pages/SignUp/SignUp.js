@@ -28,7 +28,6 @@ export default function SignUp() {
 
         sendSignUp(body)
             .then(res => {
-                console.log(res);
                 setLoading(false);
                 history.push("/");
             })

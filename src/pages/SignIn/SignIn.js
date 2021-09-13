@@ -26,7 +26,6 @@ export default function SingIn() {
 
         sendSignIn(body)
             .then(res => {
-                console.log(res);
                 setUser(res);
                 setLoading(false);
                 history.push('/hoje');
