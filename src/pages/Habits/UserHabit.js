@@ -8,6 +8,7 @@ import UserContext from "../../contexts/UserContext";
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert-edited.css'; 
 import { useState } from "react/cjs/react.development";
+import Loading from "../../components/Shared/LoadingLogIn";
 
 
 
@@ -69,7 +70,7 @@ export default function UserHabit({ name, days, id }) {
                         week={daysOfTheWeek}
                         setDaysOfTheWeek={setDaysOfTheWeek}
                         editable={false}
-                        loading={false}
+                        loading={Loading ? 1 : 0}
                     />)
                 }
                 <Trash

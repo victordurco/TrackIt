@@ -2,7 +2,9 @@ import { useState } from "react/cjs/react.development";
 import styled from "styled-components";
 
 
+
 export default function Day({ dayId, week,setDaysOfTheWeek, editable, loading }){
+    
     const [selected, setSelected] = useState(week[dayId].selected);
     let dayName = '';
 
