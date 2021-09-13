@@ -7,6 +7,7 @@ import UserHabitsContext from "../../contexts/UserHabitsContext";
 import UserContext from "../../contexts/UserContext";
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert-edited.css'; 
+import { useState } from "react/cjs/react.development";
 
 
 
@@ -14,7 +15,7 @@ export default function UserHabit({ name, days, id }) {
     const { loadHabits } = useContext(UserHabitsContext);
     const { user } = useContext(UserContext);
 
-    const daysOfTheWeek = [
+    const [daysOfTheWeek, setDaysOfTheWeek] = useState([
         { id: 0, selected: false },
         { id: 1, selected: false },
         { id: 2, selected: false },
@@ -22,7 +23,7 @@ export default function UserHabit({ name, days, id }) {
         { id: 4, selected: false },
         { id: 5, selected: false },
         { id: 6, selected: false },
-        ];
+        ]);
 
     daysOfTheWeek.forEach(day => {
         if (days.includes(day.id))
@@ -66,6 +67,7 @@ export default function UserHabit({ name, days, id }) {
                         key={index}
                         dayId={day.id}
                         week={daysOfTheWeek}
+                        setDaysOfTheWeek={setDaysOfTheWeek}
                         editable={false}
                     />)
                 }

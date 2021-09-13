@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Day from './Day';
 import UserContext from "../../contexts/UserContext";
 import UserHabitsContext from '../../contexts/UserHabitsContext';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react/cjs/react.development";
 import { sendHabit } from "../../service/trackit";
 
@@ -11,30 +11,40 @@ export default function CreateNewHabit() {
     const { loadHabits, setCreateNewHabit } = useContext(UserHabitsContext);
     const { user } = useContext(UserContext);
     const [habitName, setHabitName] = useState('');
-    const daysOfTheWeek = [
-        {id:0, selected: false},
-        {id:1, selected: false},
-        {id:2, selected: false},
-        {id:3, selected: false},
-        {id:4, selected: false},
-        {id:5, selected: false},
-        {id:6, selected: false},
-        ];
+    const [daysOfTheWeek, setDaysOfTheWeek] = useState([
+        { id: 0, selected: false },
+        { id: 1, selected: false },
+        { id: 2, selected: false },
+        { id: 3, selected: false },
+        { id: 4, selected: false },
+        { id: 5, selected: false },
+        { id: 6, selected: false },
+    ]);
 
-    const createDaysArray = () =>{
+
+
+    const createDaysArray = () => {
         const days = [];
-        daysOfTheWeek.forEach( day => {
+        daysOfTheWeek.forEach(day => {
             if (day.selected)
                 days.push(day.id);
         });
         return days;
     }
-    
-    const resetDaysOfTheWeek = () =>{
-        daysOfTheWeek.forEach( day => day.selected = false);
+
+    const resetDaysOfTheWeek = () => {
+        setDaysOfTheWeek([
+            { id: 0, selected: false },
+            { id: 1, selected: false },
+            { id: 2, selected: false },
+            { id: 3, selected: false },
+            { id: 4, selected: false },
+            { id: 5, selected: false },
+            { id: 6, selected: false },
+        ]);
     }
-    
-    const saveHabit = () =>{
+
+    const saveHabit = () => {
         const days = createDaysArray();
         const body = {
             name: habitName,
@@ -46,28 +56,29 @@ export default function CreateNewHabit() {
             }
         }
         sendHabit(body, config)
-            .then(()=>{
+            .then(() => {
                 resetDaysOfTheWeek();
                 setCreateNewHabit(false);
                 loadHabits();
             })
-            .catch(()=>alert('Erro ao cadastrar hábito'));
+            .catch(() => alert('Erro ao cadastrar hábito'));
 
     }
 
     return (
         <NewHabit>
-            <input 
-                placeholder='nome do hábito'   
-                value={habitName} 
-                onChange={e=>setHabitName(e.target.value)} 
+            <input
+                placeholder='nome do hábito'
+                value={habitName}
+                onChange={e => setHabitName(e.target.value)}
             />
             <Week>
-                {daysOfTheWeek.map((day, index) => 
-                    <Day 
-                        key={index} 
-                        dayId={day.id} 
-                        week={daysOfTheWeek} 
+                {daysOfTheWeek.map((day, index) =>
+                    <Day
+                        key={index}
+                        dayId={day.id}
+                        week={daysOfTheWeek}
+                        setDaysOfTheWeek={setDaysOfTheWeek}
                         editable={true}
                     />)}
             </Week>

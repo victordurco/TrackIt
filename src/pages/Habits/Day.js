@@ -2,7 +2,7 @@ import { useState } from "react/cjs/react.development";
 import styled from "styled-components";
 
 
-export default function Day({ dayId, week, editable }){
+export default function Day({ dayId, week,setDaysOfTheWeek, editable }){
     const [selected, setSelected] = useState(week[dayId].selected);
     let dayName = '';
 
@@ -33,14 +33,23 @@ export default function Day({ dayId, week, editable }){
     }
 
     const selectDay = (id) =>{
-        week[id].selected = !(week[id].selected);
+        const newWeek = [...week];
+        newWeek[id].selected = !(newWeek[id].selected);
+        setDaysOfTheWeek(newWeek);
         setSelected(!selected);
     }
 
     return (
         <>
             {editable?
-                <DayOfTheWeek onClick={()=>selectDay(dayId)} selected={selected}>{dayName}</DayOfTheWeek>
+                <DayOfTheWeek 
+                    onClick={()=>selectDay(dayId)} 
+                    selected={selected}
+                    setDaysOfTheWeek={setDaysOfTheWeek}
+                >        
+                        {dayName}
+                   
+                </DayOfTheWeek>
                 :
                 <DayOfTheWeek  selected={selected}>{dayName}</DayOfTheWeek>
             }
