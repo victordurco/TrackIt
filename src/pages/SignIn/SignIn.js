@@ -1,19 +1,17 @@
-import styled from 'styled-components';
-import logo from '../../img/logo-login.png';
-import { Link } from 'react-router-dom';
-import React, { useState, useContext } from 'react';
-import { sendSignIn } from '../../service/trackit';
-import { useHistory } from 'react-router'
-import UserContext from '../../contexts/UserContext';
-import Loading from '../../components/Shared/LoadingLogIn';
-
-
+import styled from "styled-components";
+import logo from "../../img/logo-login.png";
+import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { sendSignIn } from "../../service/trackit";
+import { useHistory } from "react-router";
+import UserContext from "../../contexts/UserContext";
+import Loading from "../../components/Shared/LoadingLogIn";
 
 export default function SingIn() {
     let history = useHistory();
     const { setUser } = useContext(UserContext);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     const login = (e) => {
@@ -21,79 +19,94 @@ export default function SingIn() {
         setLoading(true);
         const body = {
             email,
-            password
-        }
+            password,
+        };
 
         sendSignIn(body)
-            .then(res => {
+            .then((res) => {
                 setUser(res);
                 setLoading(false);
-                history.push('/hoje');
+                history.push("/hoje");
             })
             .catch(() => {
-                alert('erro no login');
+                alert("erro no login");
                 setLoading(false);
             });
     };
 
     return (
         <StyledDiv>
-            <img src={logo} alt='logo'/>
+            <img src={logo} alt="logo" />
             <Form onSubmit={login}>
-                <input type="email" placeholder=' email' value={email} onChange={e => setEmail(e.target.value)} required/>
-                <input type="password" placeholder=' senha' value={password} onChange={e => setPassword(e.target.value)} required/>
-                {loading ?
+                <input
+                    type="email"
+                    placeholder=" email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder=" senha"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                {loading ? (
                     <Loading />
-                    :
-                    <button type="submit" onClick={login}>Entrar</button>}
+                ) : (
+                    <button type="submit" onClick={login}>
+                        Entrar
+                    </button>
+                )}
             </Form>
-            <StyledLink to='/cadastro'>Não tem uma conta? Cadastre-se!</StyledLink>
+            <StyledLink to="/cadastro">
+                Não tem uma conta? Cadastre-se!
+            </StyledLink>
         </StyledDiv>
     );
 }
 
 const StyledDiv = styled.div`
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     height: 100vh;
 
-    
-    img{
+    img {
         width: 180px;
         height: 178.38px;
         margin-top: 68px;
         background-color: inherit;
     }
 
-    input{
+    input {
         width: 303px;
         height: 45px;
         border-radius: 5px;
-        border: 1px solid #D4D4D4;
+        border: 1px solid #d4d4d4;
         margin-bottom: 6px;
         box-sizing: border-box;
-        font-family:  'Lexend Deca', sans-serif;
+        font-family: "Lexend Deca", sans-serif;
     }
 
-    button{
+    button {
         width: 303px;
         height: 45px;
         border-radius: 5px;
         border: none;
-        background-color: #52B6FF;
+        background-color: #52b6ff;
         color: #ffffff;
-        font-family:  'Lexend Deca', sans-serif;
+        font-family: "Lexend Deca", sans-serif;
         margin-bottom: 25px;
     }
-
 `;
 
 const StyledLink = styled(Link)`
     font-size: 14px;
-    color: #52B6FF;
+    color: #52b6ff;
     text-decoration: none;
     background-color: inherit;
 `;
@@ -103,5 +116,8 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
-`;
 
+    button {
+        cursor: pointer;
+    }
+`;
