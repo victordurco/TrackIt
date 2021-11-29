@@ -3,61 +3,79 @@ import Header from "../../components/Shared/Header";
 import Footer from "../../components/Shared/Footer";
 import UserContext from "../../contexts/UserContext";
 import { useContext, useState, useEffect } from "react";
-import React from 'react';
-import * as dayjs from 'dayjs';
+import React from "react";
+import * as dayjs from "dayjs";
 import { Checkmark } from "react-ionicons";
-import { getTodayHabits, sendCheckHabit, sendUncheckHabit } from "../../service/trackit";
+import {
+    getTodayHabits,
+    sendCheckHabit,
+    sendUncheckHabit,
+} from "../../service/trackit";
 
-
-const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayHabits}) => {
-    const { user} = useContext(UserContext);
+const TodayHabit = ({
+    id,
+    name,
+    done,
+    currentSequence,
+    highestSequence,
+    loadTodayHabits,
+}) => {
+    const { user } = useContext(UserContext);
     const [checked, setChecked] = useState(done);
-    const newRecord = done && currentSequence === highestSequence? true : false;
+    const newRecord =
+        done && currentSequence === highestSequence ? true : false;
     const config = {
         headers: {
-            "Authorization": `Bearer ${user.data.token}`
-        }
-    }
+            Authorization: `Bearer ${user.data.token}`,
+        },
+    };
 
     const uncheckHabit = () => {
         setChecked(false);
         sendUncheckHabit(id, config)
-            .then(()=>{
+            .then(() => {
                 loadTodayHabits();
             })
-            .catch(()=>{
+            .catch(() => {
                 setChecked(true);
-                alert('Erro ao desmarcar hábito');
-            })
-    }
+                alert("Erro ao desmarcar hábito");
+            });
+    };
 
     const checkHabit = () => {
-        if (checked){
+        if (checked) {
             uncheckHabit();
-        }else{
+        } else {
             setChecked(true);
             sendCheckHabit(id, config)
-                .then(()=>{
+                .then(() => {
                     loadTodayHabits();
                 })
-                .catch(()=> {
+                .catch(() => {
                     setChecked(false);
-                    alert('Erro ao marcar hábito')});
+                    alert("Erro ao marcar hábito");
+                });
         }
-    }
-
-  
+    };
 
     return (
         <TodayHabitContainer>
             <HabitInfo>
                 <HabitName>{name}</HabitName>
-                <HabitSequence>Sequência atual: <Span shouldBeGreen={done}>{currentSequence} dias</Span></HabitSequence>
-                <HabitSequence>Seu recorde: <Span shouldBeGreen={newRecord}>{highestSequence} dias</Span></HabitSequence>
+                <HabitSequence>
+                    Sequência atual:{" "}
+                    <Span shouldBeGreen={done}>{currentSequence} dias</Span>
+                </HabitSequence>
+                <HabitSequence>
+                    Seu recorde:{" "}
+                    <Span shouldBeGreen={newRecord}>
+                        {highestSequence} dias
+                    </Span>
+                </HabitSequence>
             </HabitInfo>
             <HabitCheck onClick={checkHabit} checked={checked}>
                 <StyledCheckmark
-                    color={'#ffffff'}
+                    color={"#ffffff"}
                     height="60px"
                     width="60px"
                     checked={checked}
@@ -65,50 +83,53 @@ const TodayHabit = ({id, name, done, currentSequence, highestSequence,loadTodayH
             </HabitCheck>
         </TodayHabitContainer>
     );
-}
+};
 
 export default function Today() {
     //dayjs variables
-    require('dayjs/locale/pt-br');
-    let date = dayjs().locale('pt-br').format('dddd, DD/MM');
+    require("dayjs/locale/pt-br");
+    let date = dayjs().locale("pt-br").format("dddd, DD/MM");
 
     //hooks
     const { user, setTodaysProgress } = useContext(UserContext);
     const [todayHabits, setTodayHabits] = useState([]);
 
-    
     //completed habits count
     let completedHabits = 0;
-    todayHabits.forEach( habit => {
-        if (habit.done)
-            completedHabits++;
+    todayHabits.forEach((habit) => {
+        if (habit.done) completedHabits++;
     });
-    let percentageOfCompletedHabits = Math.round(completedHabits*100/todayHabits.length).toFixed(0);
- 
+    let percentageOfCompletedHabits = Math.round(
+        (completedHabits * 100) / todayHabits.length
+    ).toFixed(0);
 
     //user data
     const token = user.data.token;
     const config = {
         headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    }
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
-
-    const loadTodayHabits =  () => {
+    const loadTodayHabits = () => {
         getTodayHabits(config)
-            .then( (response) => {
+            .then((response) => {
                 setTodayHabits([...response.data]);
                 let newCompletedHabits = 0;
-                response.data.forEach( habit => {
-                    if (habit.done)
-                    newCompletedHabits++;
+                response.data.forEach((habit) => {
+                    if (habit.done) newCompletedHabits++;
                 });
-                let newPercentageOfCompletedHabits = Math.round(newCompletedHabits*100/response.data.length).toFixed(0);
-                setTodaysProgress(newPercentageOfCompletedHabits);
+                let newPercentageOfCompletedHabits = Math.round(
+                    (newCompletedHabits * 100) / response.data.length
+                ).toFixed(0);
+                setTodaysProgress(
+                    response.data.length > 0
+                        ? newPercentageOfCompletedHabits
+                        : 0
+                );
             })
-            .catch(() => alert('Erro ao recuperar hábitos do servidor'));
-    }
+            .catch(() => alert("Erro ao recuperar hábitos do servidor"));
+    };
 
     useEffect(() => loadTodayHabits(), []);
 
@@ -116,14 +137,16 @@ export default function Today() {
         <Container>
             <Header img={user.data.image} />
             <TodayTitle>{date}</TodayTitle>
-            {completedHabits > 0?
-                <CompletedSubtitle>{percentageOfCompletedHabits}% dos hábitos concluídos</CompletedSubtitle>
-            :
+            {completedHabits > 0 ? (
+                <CompletedSubtitle>
+                    {percentageOfCompletedHabits}% dos hábitos concluídos
+                </CompletedSubtitle>
+            ) : (
                 <NoneSubtitle>Nenhum hábito concluído ainda</NoneSubtitle>
-            }
-            {todayHabits.length > 0?
-                todayHabits.map( (habit, index) => 
-                    <TodayHabit 
+            )}
+            {todayHabits.length > 0 ? (
+                todayHabits.map((habit, index) => (
+                    <TodayHabit
                         key={index}
                         id={habit.id}
                         name={habit.name}
@@ -131,15 +154,15 @@ export default function Today() {
                         currentSequence={habit.currentSequence}
                         highestSequence={habit.highestSequence}
                         loadTodayHabits={loadTodayHabits}
-                    />)
-                :
+                    />
+                ))
+            ) : (
                 <p>Você não tem nenhum hábito cadastrado para hoje</p>
-            }
+            )}
             <Footer />
         </Container>
     );
 }
-
 
 const Container = styled.div`
     margin: 70px 0 70px 0;
@@ -147,7 +170,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
 
-    p{
+    p {
         margin-top: 28px;
         font-size: 18px;
         color: #666666;
@@ -157,28 +180,28 @@ const Container = styled.div`
 
 const TodayTitle = styled.span`
     font-size: 23px;
-    color: #126BA5;
+    color: #126ba5;
     margin-bottom: 5px;
 `;
 
 const NoneSubtitle = styled.span`
     font-size: 18px;
-    color: #BABABA;
+    color: #bababa;
     margin-bottom: 28px;
 `;
 
 const CompletedSubtitle = styled.span`
     font-size: 18px;
-    color: #8FC549;
+    color: #8fc549;
     margin-bottom: 28px;
 `;
 
 const TodayHabitContainer = styled.div`
     width: 340px;
     height: 94px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 5px;
-    color:#666666;
+    color: #666666;
     padding: 13px 13px 12px 15px;
     display: flex;
     flex-direction: initial;
@@ -205,22 +228,21 @@ const HabitSequence = styled.span`
 `;
 
 const Span = styled.span`
-    color: ${props => props.shouldBeGreen? '#8FC549' : '#666666'};
+    color: ${(props) => (props.shouldBeGreen ? "#8FC549" : "#666666")};
     background-color: inherit;
 `;
-
 
 const HabitCheck = styled.button`
     width: 69px;
     height: 69px;
     border-radius: 5px;
     border: none;
-    background-color: ${props => props.checked? '#8FC549' : '#EBEBEB'};
+    background-color: ${(props) => (props.checked ? "#8FC549" : "#EBEBEB")};
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 
 const StyledCheckmark = styled(Checkmark)`
-    background-color: ${props => props.checked? '#8FC549' : '#EBEBEB'};
+    background-color: ${(props) => (props.checked ? "#8FC549" : "#EBEBEB")};
 `;
