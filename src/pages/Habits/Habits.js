@@ -1,20 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useState, useEffect } from "react";
 import Header from "../../components/Shared/Header";
 import styled from "styled-components";
 import Footer from "../../components/Shared/Footer";
-import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+
+import UserHabitsContext from "../../contexts/UserHabitsContext";
 import UserContext from "../../contexts/UserContext";
 import { getHabits } from "../../service/trackit";
-import { useState, useEffect } from "react";
+
 import CreateNewHabit from "./CreateNewHabit";
-import UserHabitsContext from "../../contexts/UserHabitsContext";
 import UserHabit from "./UserHabit";
 
 export default function Habits() {
+    const history = useHistory("/");
     const { user, setTodaysProgress } = useContext(UserContext);
     const [habits, setHabits] = useState([]);
     const [createNewHabit, setCreateNewHabit] = useState(false);
-    const token = user.data.token;
+    const token = user.data ? user.data.token : "";
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -30,11 +33,16 @@ export default function Habits() {
             .catch(() => alert("Erro ao recuperar hábitos do servidor"));
     };
 
-    useEffect(() => loadHabits(), []);
+    useEffect(() => {
+        if (!user.data) {
+            history.push("/");
+        }
+        loadHabits();
+    }, []);
 
     return (
         <div>
-            <Header img={user.data.image} />
+            <Header img={user.data ? user.data.image : ""} />
             <Body>
                 <HabitsTitle>
                     Meus hábitos

@@ -1,15 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
+import * as dayjs from "dayjs";
+import { useHistory } from "react-router-dom";
+
+import UserContext from "../../contexts/UserContext";
+import { getTodayHabits } from "../../service/trackit";
+
 import Header from "../../components/Shared/Header";
 import Footer from "../../components/Shared/Footer";
-import UserContext from "../../contexts/UserContext";
-import { useContext, useState, useEffect } from "react";
-import React from "react";
-import * as dayjs from "dayjs";
-import { getTodayHabits } from "../../service/trackit";
 import TodayHabit from "./TodayHabit";
 
 export default function Today() {
+    const history = useHistory();
     //dayjs variables
     require("dayjs/locale/pt-br");
     let date = dayjs().locale("pt-br").format("dddd, DD/MM");
@@ -28,7 +31,7 @@ export default function Today() {
     ).toFixed(0);
 
     //user data
-    const token = user.data.token;
+    const token = user.data ? user.data.token : "";
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -55,11 +58,16 @@ export default function Today() {
             .catch(() => alert("Erro ao recuperar hábitos do servidor"));
     };
 
-    useEffect(() => loadTodayHabits(), []);
+    useEffect(() => {
+        if (!user.data) {
+            history.push("/");
+        }
+        loadTodayHabits();
+    }, []);
 
     return (
         <Container>
-            <Header img={user.data.image} />
+            <Header img={user.data ? user.data.image : ""} />
             <TodayTitle>{date}</TodayTitle>
             {completedHabits > 0 ? (
                 <CompletedSubtitle>
