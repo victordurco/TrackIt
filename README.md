@@ -20,7 +20,7 @@ um gif da aplicação bem maneiro -->
 
 ## Deployment 🚀
 
-<p align="center"><a  href="">Check it here!</a></p>
+<p align="center"><a  href="https://track-it-nine.vercel.app/">Check it here!</a></p>
 
 </br>
 
